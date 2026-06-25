@@ -248,12 +248,11 @@
     // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
     // Letter/punct on the bottom row = white; home-row key above each gap = black.
     ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Semicolon','D#','mid'],['Slash','E','mid'],
-    // Middle row (Q row) — starts at F of middle octave so it picks up
-    // where the bridge keys leave off, then continues into the next octave.
-    // Letters on the Q row = white keys; numbers above each gap = black keys.
+    // Middle row (Q row) — F4 through B4. Letters = white keys, numbers above
+    // each gap = black keys. Stops at R so the I row naturally picks up at C5
+    // without overlap (otherwise I O P labels would overwrite T Y U).
     ['KeyQ','F','mid',0],['Digit2','F#','mid',0],['KeyW','G','mid',0],['Digit3','G#','mid',0],
     ['KeyE','A','mid',0],['Digit4','A#','mid',0],['KeyR','B','mid',0],
-    ['KeyT','C','mid',1],['Digit6','C#','mid',1],['KeyY','D','mid',1],['Digit7','D#','mid',1],['KeyU','E','mid',1],
     // Top row (I row)
     ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
     ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top'],
