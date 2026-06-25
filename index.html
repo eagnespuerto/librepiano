@@ -247,9 +247,11 @@
     // Bridge keys at the bottom-right: extend into middle octave so the
     // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
     ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Quote','D#','mid'],['Slash','E','mid'],
-    // Middle row (Q row)
-    ['KeyQ','C','mid'],['Digit2','C#','mid'],['KeyW','D','mid'],['Digit3','D#','mid'],['KeyE','E','mid'],
-    ['KeyR','F','mid'],['Digit5','F#','mid'],['KeyT','G','mid'],['Digit6','G#','mid'],['KeyY','A','mid'],['Digit7','A#','mid'],['KeyU','B','mid'],
+    // Middle row (Q row) — starts at F of middle octave so it picks up
+    // where the bridge keys leave off, then continues into the next octave.
+    ['KeyQ','F','mid',0],['Digit2','F#','mid',0],['KeyW','G','mid',0],['Digit3','G#','mid',0],
+    ['KeyE','A','mid',0],['KeyR','A#','mid',0],['Digit5','B','mid',0],
+    ['KeyT','C','mid',1],['Digit6','C#','mid',1],['KeyY','D','mid',1],['Digit7','D#','mid',1],['KeyU','E','mid',1],
     // Top row (I row)
     ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
     ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top']
@@ -265,13 +267,13 @@
   // Build mapping with octaves
   function buildKeyMap() {
     const map = {};
-    KEY_MAP.forEach(([code, note, group]) => {
+    KEY_MAP.forEach(([code, note, group, octDelta = 0]) => {
       let row;
       if (group === 'bot') row = bottomRowLow ? -1 : 1;
       else if (group === 'top') row = bottomRowLow ? 1 : -1;
       else row = 0;
       const noteIdx = NOTE_NAMES.indexOf(note);
-      const midi = (baseOctave + row + octaveShift) * 12 + noteIdx + 12;
+      const midi = (baseOctave + row + octaveShift + octDelta) * 12 + noteIdx + 12;
       map[code] = { note, midi, row };
     });
     return map;
