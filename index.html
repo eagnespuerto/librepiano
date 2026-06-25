@@ -237,17 +237,22 @@
   const WHITE_PATTERN = [0,2,4,5,7,9,11];
   const BLACK_OFFSETS = {0:1, 1:3, 3:6, 4:8, 5:10};
 
-  // Keyboard rows: 3 octaves of keys
+  // Keyboard rows: 3 octaves of keys. Third entry per key is the row group
+  // ('bot' = bottom Z row, 'mid' = Q row, 'top' = I row). The 'bot' and 'top'
+  // groups swap their octave when the row-order toggle flips.
   const KEY_MAP = [
-    // Lower octave (Z row)
-    ['KeyZ','C'],['KeyS','C#'],['KeyX','D'],['KeyD','D#'],['KeyC','E'],
-    ['KeyV','F'],['KeyG','F#'],['KeyB','G'],['KeyH','G#'],['KeyN','A'],['KeyJ','A#'],['KeyM','B'],
-    // Middle octave (Q row)
-    ['KeyQ','C'],['Digit2','C#'],['KeyW','D'],['Digit3','D#'],['KeyE','E'],
-    ['KeyR','F'],['Digit5','F#'],['KeyT','G'],['Digit6','G#'],['KeyY','A'],['Digit7','A#'],['KeyU','B'],
-    // Upper octave (I row)
-    ['KeyI','C'],['Digit9','C#'],['KeyO','D'],['Digit0','D#'],['KeyP','E'],
-    ['BracketLeft','F'],['Minus','F#'],['BracketRight','G'],['Equal','G#']
+    // Bottom row (Z row)
+    ['KeyZ','C','bot'],['KeyS','C#','bot'],['KeyX','D','bot'],['KeyD','D#','bot'],['KeyC','E','bot'],
+    ['KeyV','F','bot'],['KeyG','F#','bot'],['KeyB','G','bot'],['KeyH','G#','bot'],['KeyN','A','bot'],['KeyJ','A#','bot'],['KeyM','B','bot'],
+    // Bridge keys at the bottom-right: extend into middle octave so the
+    // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
+    ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Quote','D#','mid'],['Slash','E','mid'],
+    // Middle row (Q row)
+    ['KeyQ','C','mid'],['Digit2','C#','mid'],['KeyW','D','mid'],['Digit3','D#','mid'],['KeyE','E','mid'],
+    ['KeyR','F','mid'],['Digit5','F#','mid'],['KeyT','G','mid'],['Digit6','G#','mid'],['KeyY','A','mid'],['Digit7','A#','mid'],['KeyU','B','mid'],
+    // Top row (I row)
+    ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
+    ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top']
   ];
 
   let baseOctave = 4; // middle row starts at C4
@@ -260,11 +265,11 @@
   // Build mapping with octaves
   function buildKeyMap() {
     const map = {};
-    KEY_MAP.forEach(([code, note], i) => {
+    KEY_MAP.forEach(([code, note, group]) => {
       let row;
-      if (i < 12) row = bottomRowLow ? -1 : 1;
-      else if (i < 24) row = 0;
-      else row = bottomRowLow ? 1 : -1;
+      if (group === 'bot') row = bottomRowLow ? -1 : 1;
+      else if (group === 'top') row = bottomRowLow ? 1 : -1;
+      else row = 0;
       const noteIdx = NOTE_NAMES.indexOf(note);
       const midi = (baseOctave + row + octaveShift) * 12 + noteIdx + 12;
       map[code] = { note, midi, row };
@@ -501,6 +506,10 @@
         else if (code === 'BracketRight') kbText = ']';
         else if (code === 'Equal') kbText = '+';
         else if (code === 'Minus') kbText = '-';
+        else if (code === 'Comma') kbText = ',';
+        else if (code === 'Period') kbText = '.';
+        else if (code === 'Slash') kbText = '/';
+        else if (code === 'Quote') kbText = "'";
       }
       kb.textContent = kbText;
       kb.style.display = (showKey && kbText) ? '' : 'none';
