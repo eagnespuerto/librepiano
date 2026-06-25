@@ -244,10 +244,12 @@
     // Bottom row (Z row)
     ['KeyZ','C','bot'],['KeyS','C#','bot'],['KeyX','D','bot'],['KeyD','D#','bot'],['KeyC','E','bot'],
     ['KeyV','F','bot'],['KeyG','F#','bot'],['KeyB','G','bot'],['KeyH','G#','bot'],['KeyN','A','bot'],['KeyJ','A#','bot'],['KeyM','B','bot'],
-    // Bridge keys at the bottom-right: extend into middle octave so the
-    // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
-    // Letter/punct on the bottom row = white; home-row key above each gap = black.
-    ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Semicolon','D#','mid'],['Slash','E','mid'],
+    // Bridge keys at the bottom-right: extend the bottom row up by C-E so the
+    // user can reach C/C#/D/D#/E from the bottom row. Letter/punct on the
+    // bottom row = white; home-row key above each gap = black. These follow
+    // the bottom-row swap: they play one octave above the bot group, so
+    // bottom-low → middle's C-E, bottom-high → high-side gap stays covered.
+    ['Comma','C','bridge'],['KeyL','C#','bridge'],['Period','D','bridge'],['Semicolon','D#','bridge'],['Slash','E','bridge'],
     // Middle row (Q row) — F4 through E5. Letters = white keys, numbers above
     // each gap = black keys. T Y U cross into the next octave (delta=1).
     ['KeyQ','F','mid',0],['Digit2','F#','mid',0],['KeyW','G','mid',0],['Digit3','G#','mid',0],
@@ -274,6 +276,7 @@
       let row;
       if (group === 'bot') row = bottomRowLow ? -1 : 1;
       else if (group === 'top') row = bottomRowLow ? 1 : -1;
+      else if (group === 'bridge') row = bottomRowLow ? 0 : -1;
       else row = 0;
       const noteIdx = NOTE_NAMES.indexOf(note);
       const midi = (baseOctave + row + octaveShift + octDelta) * 12 + noteIdx + 12;
