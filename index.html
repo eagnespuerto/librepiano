@@ -254,7 +254,8 @@
     ['KeyT','C','mid',1],['Digit6','C#','mid',1],['KeyY','D','mid',1],['Digit7','D#','mid',1],['KeyU','E','mid',1],
     // Top row (I row)
     ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
-    ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top']
+    ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top'],
+    ['Backslash','A','top']
   ];
 
   let baseOctave = 4; // middle row starts at C4
@@ -512,6 +513,7 @@
         else if (code === 'Period') kbText = '.';
         else if (code === 'Slash') kbText = '/';
         else if (code === 'Quote') kbText = "'";
+        else if (code === 'Backslash') kbText = '\\';
       }
       kb.textContent = kbText;
       kb.style.display = (showKey && kbText) ? '' : 'none';
