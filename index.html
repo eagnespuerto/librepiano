@@ -189,9 +189,7 @@
   </div>
   <div class="control-group">
     <label>Octave shift:</label>
-    <button id="oct-down">−</button>
     <span id="oct-display" style="min-width:24px;text-align:center;">0</span>
-    <button id="oct-up">+</button>
   </div>
   <div class="control-group">
     <label for="show-labels">Labels:</label>
@@ -218,7 +216,7 @@
 <div class="piano-wrap">
   <div class="piano" id="piano"></div>
 </div>
-<div class="hint">Three keyboard rows span three octaves (Z, Q, I rows). Use ↑ / ↓ arrows or − / + to shift octaves. Toggle which row plays low vs. high above.</div>
+<div class="hint">Three keyboard rows span three octaves (Z, Q, I rows). Use ← / → to shift octaves. Use ↑ / ↓ to swap whether the bottom row plays the low or high octave.</div>
 
 <div class="pdf-section">
   <div class="pdf-header">
@@ -247,7 +245,7 @@
     ['KeyR','F'],['Digit5','F#'],['KeyT','G'],['Digit6','G#'],['KeyY','A'],['Digit7','A#'],['KeyU','B'],
     // Upper octave (I row)
     ['KeyI','C'],['Digit9','C#'],['KeyO','D'],['Digit0','D#'],['KeyP','E'],
-    ['BracketLeft','F'],['Equal','F#'],['BracketRight','G']
+    ['BracketLeft','F'],['Minus','F#'],['BracketRight','G'],['Equal','G#']
   ];
 
   let baseOctave = 4; // middle row starts at C4
@@ -499,7 +497,8 @@
         else if (code.startsWith('Digit')) kbText = code.slice(5);
         else if (code === 'BracketLeft') kbText = '[';
         else if (code === 'BracketRight') kbText = ']';
-        else if (code === 'Equal') kbText = '=';
+        else if (code === 'Equal') kbText = '+';
+        else if (code === 'Minus') kbText = '-';
       }
       kb.textContent = kbText;
       kb.style.display = (showKey && kbText) ? '' : 'none';
@@ -510,16 +509,25 @@
   const pressed = new Set();
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-    if (e.code === 'ArrowUp') {
+    if (e.code === 'ArrowRight') {
       e.preventDefault();
       if (e.repeat) return;
       if (octaveShift < 3) { octaveShift++; octDisplay.textContent = octaveShift; buildPiano(); }
       return;
     }
-    if (e.code === 'ArrowDown') {
+    if (e.code === 'ArrowLeft') {
       e.preventDefault();
       if (e.repeat) return;
       if (octaveShift > -3) { octaveShift--; octDisplay.textContent = octaveShift; buildPiano(); }
+      return;
+    }
+    if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+      e.preventDefault();
+      if (e.repeat) return;
+      bottomRowLow = !bottomRowLow;
+      const sel = document.getElementById('row-order');
+      sel.value = bottomRowLow ? 'low' : 'high';
+      updateLabels();
       return;
     }
     if (e.repeat) return;
@@ -558,12 +566,6 @@
     updateLabels();
   });
   const octDisplay = document.getElementById('oct-display');
-  document.getElementById('oct-down').addEventListener('click', () => {
-    if (octaveShift > -3) { octaveShift--; octDisplay.textContent = octaveShift; buildPiano(); }
-  });
-  document.getElementById('oct-up').addEventListener('click', () => {
-    if (octaveShift < 3) { octaveShift++; octDisplay.textContent = octaveShift; buildPiano(); }
-  });
 
   buildPiano();
 
