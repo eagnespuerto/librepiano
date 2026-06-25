@@ -189,7 +189,9 @@
   </div>
   <div class="control-group">
     <label>Octave shift:</label>
+    <button id="oct-down" aria-label="Shift octave down">−</button>
     <span id="oct-display" style="min-width:24px;text-align:center;">0</span>
+    <button id="oct-up" aria-label="Shift octave up">+</button>
   </div>
   <div class="control-group">
     <label for="show-labels">Labels:</label>
@@ -566,6 +568,12 @@
     updateLabels();
   });
   const octDisplay = document.getElementById('oct-display');
+  document.getElementById('oct-down').addEventListener('click', () => {
+    if (octaveShift > -3) { octaveShift--; octDisplay.textContent = octaveShift; buildPiano(); }
+  });
+  document.getElementById('oct-up').addEventListener('click', () => {
+    if (octaveShift < 3) { octaveShift++; octDisplay.textContent = octaveShift; buildPiano(); }
+  });
 
   buildPiano();
 
