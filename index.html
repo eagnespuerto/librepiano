@@ -246,11 +246,13 @@
     ['KeyV','F','bot'],['KeyG','F#','bot'],['KeyB','G','bot'],['KeyH','G#','bot'],['KeyN','A','bot'],['KeyJ','A#','bot'],['KeyM','B','bot'],
     // Bridge keys at the bottom-right: extend into middle octave so the
     // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
-    ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Quote','D#','mid'],['Slash','E','mid'],
+    // Letter/punct on the bottom row = white; home-row key above each gap = black.
+    ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Semicolon','D#','mid'],['Slash','E','mid'],
     // Middle row (Q row) — starts at F of middle octave so it picks up
     // where the bridge keys leave off, then continues into the next octave.
+    // Letters on the Q row = white keys; numbers above each gap = black keys.
     ['KeyQ','F','mid',0],['Digit2','F#','mid',0],['KeyW','G','mid',0],['Digit3','G#','mid',0],
-    ['KeyE','A','mid',0],['KeyR','A#','mid',0],['Digit5','B','mid',0],
+    ['KeyE','A','mid',0],['Digit4','A#','mid',0],['KeyR','B','mid',0],
     ['KeyT','C','mid',1],['Digit6','C#','mid',1],['KeyY','D','mid',1],['Digit7','D#','mid',1],['KeyU','E','mid',1],
     // Top row (I row)
     ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
@@ -513,6 +515,7 @@
         else if (code === 'Period') kbText = '.';
         else if (code === 'Slash') kbText = '/';
         else if (code === 'Quote') kbText = "'";
+        else if (code === 'Semicolon') kbText = ';';
         else if (code === 'Backslash') kbText = '\\';
       }
       kb.textContent = kbText;
