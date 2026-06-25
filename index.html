@@ -536,10 +536,12 @@
       if (octaveShift > -3) { octaveShift--; octDisplay.textContent = octaveShift; buildPiano(); }
       return;
     }
-    if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+    if (e.code === 'ArrowDown' || e.code === 'ArrowUp') {
       e.preventDefault();
       if (e.repeat) return;
-      bottomRowLow = !bottomRowLow;
+      const wantLow = e.code === 'ArrowDown';
+      if (wantLow === bottomRowLow) return;
+      bottomRowLow = wantLow;
       const sel = document.getElementById('row-order');
       sel.value = bottomRowLow ? 'low' : 'high';
       updateLabels();
