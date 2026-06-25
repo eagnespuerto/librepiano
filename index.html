@@ -248,15 +248,16 @@
     // user can reach C/C#/D/D#/E of the middle octave from the bottom row.
     // Letter/punct on the bottom row = white; home-row key above each gap = black.
     ['Comma','C','mid'],['KeyL','C#','mid'],['Period','D','mid'],['Semicolon','D#','mid'],['Slash','E','mid'],
-    // Middle row (Q row) — F4 through B4. Letters = white keys, numbers above
-    // each gap = black keys. Stops at R so the I row naturally picks up at C5
-    // without overlap (otherwise I O P labels would overwrite T Y U).
+    // Middle row (Q row) — F4 through E5. Letters = white keys, numbers above
+    // each gap = black keys. T Y U cross into the next octave (delta=1).
     ['KeyQ','F','mid',0],['Digit2','F#','mid',0],['KeyW','G','mid',0],['Digit3','G#','mid',0],
     ['KeyE','A','mid',0],['Digit4','A#','mid',0],['KeyR','B','mid',0],
-    // Top row (I row)
-    ['KeyI','C','top'],['Digit9','C#','top'],['KeyO','D','top'],['Digit0','D#','top'],['KeyP','E','top'],
-    ['BracketLeft','F','top'],['Minus','F#','top'],['BracketRight','G','top'],['Equal','G#','top'],
-    ['Backslash','A','top']
+    ['KeyT','C','mid',1],['Digit6','C#','mid',1],['KeyY','D','mid',1],['Digit7','D#','mid',1],['KeyU','E','mid',1],
+    // Top row (I row) — starts at F5 so T Y U (C5 D5 E5 on the Q row) and
+    // I O P (F5 G5 A5) play different notes. Continues into octave 6 via delta.
+    ['KeyI','F','top',0],['Digit9','F#','top',0],['KeyO','G','top',0],['Digit0','G#','top',0],
+    ['KeyP','A','top',0],['Minus','A#','top',0],['BracketLeft','B','top',0],
+    ['BracketRight','C','top',1],['Equal','C#','top',1],['Backslash','D','top',1]
   ];
 
   let baseOctave = 4; // middle row starts at C4
@@ -492,7 +493,7 @@
     keyMap = buildKeyMap();
     const codeByMidi = {};
     Object.entries(keyMap).forEach(([code, info]) => {
-      codeByMidi[info.midi] = code;
+      if (!(info.midi in codeByMidi)) codeByMidi[info.midi] = code;
     });
     document.querySelectorAll('.key').forEach(el => {
       const midi = +el.dataset.midi;
